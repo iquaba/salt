@@ -573,6 +573,7 @@ class LocalClient(object):
                     if tgt_type in ('glob', 'pcre', 'list'):
                         if len(found.intersection(minions)) >= len(minions):
                             fail = sorted(list(minions.difference(found)))
+                            print fail
                             for minion in fail:
                                 yield({
                                     minion: {
@@ -867,6 +868,7 @@ class LocalClient(object):
             tgt='*',
             tgt_type='glob',
             verbose=False,
+            show_timeout=False,
             **kwargs):
         '''
         Get the returns for the command line interface via the event system
@@ -946,7 +948,7 @@ class LocalClient(object):
                 if more_time:
                     timeout += inc_timeout
                     continue
-                if verbose:
+                if verbose or show_timeout:
                     if tgt_type in ('glob', 'pcre', 'list'):
                         if len(found) < len(minions):
                             fail = sorted(list(minions.difference(found)))
