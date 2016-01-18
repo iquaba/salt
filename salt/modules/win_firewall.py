@@ -154,3 +154,44 @@ def delete_rule(name, localport, protocol='tcp', dir='in'):
     else:
         log.error('firewall.delete_rule failed: {0}'.format(ret))
         return False
+
+def disable_rule(name):
+    '''
+    Disable an existing firewall rule
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' firewall.disable_rule 'test'
+    '''
+    cmd = ['netsh', 'advfirewall', 'firewall', 'set', 'rule',
+           'name={0}'.format(name),
+           'new enable=no']
+    ret = __salt__['cmd.run'](cmd, python_shell=False)
+    if isinstance(ret, six.string_types):
+        return ret.endswith('Ok.')
+    else:
+        log.error('firewall.disable_rule failed: {0}'.format(ret))
+        return False
+    
+def enable_rule(name):
+    '''
+    Enable an existing firewall rule
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' firewall.enable_rule 'test'
+    '''
+    cmd = ['netsh', 'advfirewall', 'firewall', 'set', 'rule',
+           'name={0}'.format(name),
+           'new enable=yes']
+    ret = __salt__['cmd.run'](cmd, python_shell=False)
+    if isinstance(ret, six.string_types):
+        return ret.endswith('Ok.')
+    else:
+        log.error('firewall.enable_rule failed: {0}'.format(ret))
+        return False
+    
